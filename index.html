@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChemMemo – Element City</title>
+<style>
+:root{--ink:#17233b;--muted:#64748b;--bg:#f4f7fb;--panel:#fff;--blue:#2864dc;--line:#e4eaf3;--shadow:0 12px 32px #1b37600d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{background:linear-gradient(120deg,#10264c,#2864dc);color:white;padding:24px max(20px,calc((100vw - 1180px)/2));}
+.brand{display:flex;align-items:center;gap:12px}.logo{font-size:30px}.brand h1{margin:0;font-size:25px}.brand p{margin:2px 0 0;color:#dbeafe}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.tab{border:1px solid #ffffff55;background:#ffffff12;color:white;border-radius:12px;padding:10px 15px;cursor:pointer;font-weight:700}.tab.active,.tab:hover{background:white;color:#1e40af}
+main{max-width:1180px;margin:24px auto;padding:0 18px}.hero{background:linear-gradient(120deg,#e6f0ff,#f2f7ff);border:1px solid #d9e7ff;border-radius:20px;padding:24px;margin-bottom:18px}.hero h2{font-size:26px;margin:0 0 8px}.hero p{margin:0;color:#42536d}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}.stat strong{display:block;font-size:24px;color:#2459c6}.stat span{color:var(--muted);font-size:13px}
+.section{display:none}.section.active{display:block}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.toolbar input,.toolbar select{border:1px solid var(--line);background:white;border-radius:10px;padding:11px 12px;font:inherit}.toolbar input{flex:1;min-width:190px}
+.tablewrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:15px;padding:12px}.periodic{display:grid;grid-template-columns:repeat(18,minmax(48px,1fr));gap:5px;min-width:980px}.element{border:1px solid #dbe4f0;border-radius:9px;min-height:66px;padding:5px 3px;text-align:center;cursor:pointer;position:relative;background:#f8fbff;transition:.15s}.element:hover{transform:translateY(-3px);box-shadow:0 7px 14px #243b601c}.element b{display:block;font-size:19px}.element small{display:block;font-size:9px;line-height:1.15}.element em{font-style:normal;font-size:9px;color:#53647c}
+.alkali{background:#ffe8df}.alkaline{background:#fff1d5}.transition{background:#e5edff}.post{background:#e6f5ff}.metalloid{background:#e9f5e6}.nonmetal{background:#e2f6e9}.halogen{background:#f1e9ff}.noble{background:#ffe7f1}.lanth{background:#fff3d9}.act{background:#f1e9ff}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.legend span{font-size:12px;padding:5px 9px;border-radius:8px;background:#fff;border:1px solid var(--line)}
+.gamegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.gamecard{cursor:pointer;text-align:left;border:1px solid var(--line);background:white;border-radius:16px;padding:18px;box-shadow:var(--shadow)}.gamecard:hover{border-color:#8bb2ff;transform:translateY(-2px)}.gameicon{font-size:32px}.gamecard h3{margin:7px 0 4px}.gamecard p{margin:0;color:var(--muted)}
+.question{font-size:22px;font-weight:800;margin:12px 0 18px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.answer{padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font:inherit;font-weight:650}.answer:hover{border-color:var(--blue);background:#f2f7ff}.answer:disabled{cursor:default}.answer.correct{background:#e5f8ed;border-color:#53b77b}.answer.wrong{background:#fff0ed;border-color:#e58a78}.gamehead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-weight:700}.feedback{margin-top:14px;padding:12px;border-radius:10px;background:#f1f5fb;min-height:45px}.primary,.secondary{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#eaf0fa;color:#23416d}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.matchgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:15px}.tile{min-height:85px;border:1px solid #dce5f2;border-radius:12px;background:#eaf1fc;font-weight:800;font-size:18px;cursor:pointer}.tile.open{background:white;border-color:#7ba7f8}.tile.done{background:#e3f7eb;border-color:#7bc99b;cursor:default}
+.modal{position:fixed;inset:0;background:#10203d99;display:none;align-items:center;justify-content:center;padding:18px;z-index:5}.modal.show{display:flex}.modalbox{background:white;border-radius:18px;max-width:430px;width:100%;padding:22px;position:relative}.close{position:absolute;right:14px;top:12px;border:0;background:#eef2f8;border-radius:8px;padding:6px 10px;cursor:pointer}.bigsymbol{font-size:54px;font-weight:900;color:#2459c6}.muted{color:var(--muted)}.footer{text-align:center;color:#8190a5;padding:28px 10px;font-size:12px}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.answers{grid-template-columns:1fr}.matchgrid{grid-template-columns:repeat(3,1fr)}.hero h2{font-size:22px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">🏙️</div><div><h1>ChemMemo – ELEMENT CITY</h1><p>Khám phá thành phố 118 nguyên tố</p></div></div>
+<nav><button class="tab active" data-tab="home">🏠 Trang chủ</button><button class="tab" data-tab="table">🧪 Thành phố nguyên tố</button><button class="tab" data-tab="games">🎮 Trò chơi</button><button class="tab" data-tab="learn">📚 Học nhanh</button></nav></header>
+<main>
+<section id="home" class="section active">
+<div class="hero"><h2>Chào mừng đến ELEMENT CITY!</h2><p>Mỗi nguyên tố là một “tòa nhà” trong thành phố hóa học. Khám phá bảng tuần hoàn, mở từng tòa nhà và luyện trí nhớ qua trò chơi.</p></div>
+<div class="stats"><div class="stat"><strong>118</strong><span>Nguyên tố trong thành phố</span></div><div class="stat"><strong id="homeScore">0</strong><span>Điểm trò chơi của bạn</span></div><div class="stat"><strong>3</strong><span>Hoạt động học tập</span></div></div>
+<div class="panel"><h3>🚀 Bắt đầu khám phá</h3><p>Tra cứu nguyên tố hoặc thử sức với các trò chơi nhận biết ký hiệu và ghép cặp.</p><div class="actions"><button class="primary" onclick="showTab('table')">Khám phá 118 tòa nhà</button><button class="secondary" onclick="showTab('games')">Chơi ngay</button></div></div>
+</section>
+<section id="table" class="section">
+<div class="hero"><h2>🏙️ Thành phố nguyên tố</h2><p>Chọn một tòa nhà để xem thông tin cơ bản. Màu sắc giúp phân biệt các họ nguyên tố.</p></div>
+<div class="toolbar"><input id="search" placeholder="Tìm tên, ký hiệu hoặc số nguyên tử…"><select id="filter"><option value="all">Tất cả nhóm</option><option value="metal">Kim loại</option><option value="nonmetal">Phi kim</option><option value="noble">Khí hiếm</option><option value="metalloid">Á kim</option></select></div>
+<div class="legend"><span>🟧 Kim loại kiềm/kiềm thổ</span><span>🟦 Kim loại chuyển tiếp</span><span>🟩 Phi kim</span><span>🟪 Halogen/khí hiếm</span><span>🟨 Họ f</span></div>
+<div class="tablewrap"><div class="periodic" id="periodic"></div><h3>Họ Lanthanoid</h3><div id="lanths" style="display:flex;gap:5px;min-width:980px"></div><h3>Họ Actinoid</h3><div id="acts" style="display:flex;gap:5px;min-width:980px"></div></div>
+<p class="muted">Mẹo: dùng ô tìm kiếm để tìm nhanh nguyên tố. Trên điện thoại, vuốt ngang bảng tuần hoàn.</p>
+</section>
+<section id="games" class="section">
+<div class="hero"><h2>🎮 Khu vui chơi hóa học</h2><p>Chơi để ghi nhớ ký hiệu và tên 118 nguyên tố. Mỗi câu đúng được 10 điểm.</p></div>
+<div id="gameMenu" class="gamegrid">
+<button class="gamecard" onclick="startQuiz('symbol')"><div class="gameicon">🔎</div><h3>Đoán tên nguyên tố</h3><p>Nhìn ký hiệu hóa học và chọn tên đúng.</p></button>
+<button class="gamecard" onclick="startQuiz('name')"><div class="gameicon">🧠</div><h3>Đoán ký hiệu</h3><p>Đọc tên nguyên tố và chọn ký hiệu chính xác.</p></button>
+<button class="gamecard" onclick="startMatch()"><div class="gameicon">🃏</div><h3>Ghép cặp nguyên tố</h3><p>Lật thẻ và ghép tên với ký hiệu tương ứng.</p></button>
+</div>
+<div id="gameArea" class="panel" style="display:none;margin-top:16px"></div>
+</section>
+<section id="learn" class="section">
+<div class="hero"><h2>📚 Học nhanh</h2><p>Một vài kiến thức cơ bản để bắt đầu học bảng tuần hoàn.</p></div>
+<div class="panel"><h3>Bảng tuần hoàn được sắp xếp thế nào?</h3><ul><li><b>Số hiệu nguyên tử:</b> số proton trong hạt nhân, tăng dần từ trái sang phải và từ trên xuống dưới.</li><li><b>Chu kỳ:</b> hàng ngang của bảng tuần hoàn.</li><li><b>Nhóm:</b> cột dọc; các nguyên tố cùng nhóm thường có tính chất hóa học gần giống nhau.</li><li><b>Ký hiệu hóa học:</b> gồm một hoặc hai chữ cái, chữ đầu viết hoa.</li></ul><h3>Gợi ý học tập</h3><p>Học theo từng nhóm nhỏ, đọc tên cùng ký hiệu, sau đó chơi trò đoán tên hoặc ghép cặp để tự kiểm tra.</p></div>
+</section>
+<div class="footer">ChemMemo – sản phẩm học tập thử nghiệm • Hoạt động ngoại tuyến sau khi tải và giải nén</div>
+</main>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="modalbox"><button class="close" onclick="closeModal()">✕</button><div class="bigsymbol" id="mSymbol"></div><h2 id="mName"></h2><p id="mEn" class="muted"></p><hr><p id="mInfo"></p></div></div>
+<script>
+const raw = `H|Hydro|Hiđro|1|1|nonmetal
+He|Helium|Heli|2|18|noble
+Li|Lithium|Liti|3|1|alkali
+Be|Beryllium|Beri|4|2|alkaline
+B|Boron|Bo|5|13|metalloid
+C|Carbon|Cacbon|6|14|nonmetal
+N|Nitrogen|Nitơ|7|15|nonmetal
+O|Oxygen|Oxi|8|16|nonmetal
+F|Fluorine|Flo|9|17|halogen
+Ne|Neon|Neon|10|18|noble
+Na|Sodium|Natri|11|1|alkali
+Mg|Magnesium|Magiê|12|2|alkaline
+Al|Aluminium|Nhôm|13|13|post
+Si|Silicon|Silic|14|14|metalloid
+P|Phosphorus|Photpho|15|15|nonmetal
+S|Sulfur|Lưu huỳnh|16|16|nonmetal
+Cl|Chlorine|Clo|17|17|halogen
+Ar|Argon|Argon|18|18|noble
+K|Potassium|Kali|19|1|alkali
+Ca|Calcium|Canxi|20|2|alkaline
+Sc|Scandium|Scandi|21|3|transition
+Ti|Titanium|Titan|22|4|transition
+V|Vanadium|Vanadi|23|5|transition
+Cr|Chromium|Crom|24|6|transition
+Mn|Manganese|Mangan|25|7|transition
+Fe|Iron|Sắt|26|8|transition
+Co|Cobalt|Coban|27|9|transition
+Ni|Nickel|Niken|28|10|transition
+Cu|Copper|Đồng|29|11|transition
+Zn|Zinc|Kẽm|30|12|transition
+Ga|Gallium|Gali|31|13|post
+Ge|Germanium|Gecmani|32|14|metalloid
+As|Arsenic|Asen|33|15|metalloid
+Se|Selenium|Selen|34|16|nonmetal
+Br|Bromine|Brom|35|17|halogen
+Kr|Krypton|Kripton|36|18|noble
+Rb|Rubidium|Rubidi|37|1|alkali
+Sr|Strontium|Stronti|38|2|alkaline
+Y|Yttrium|Ytri|39|3|transition
+Zr|Zirconium|Zirconi|40|4|transition
+Nb|Niobium|Niobi|41|5|transition
+Mo|Molybdenum|Molypden|42|6|transition
+Tc|Technetium|Tecneti|43|7|transition
+Ru|Ruthenium|Ruteni|44|8|transition
+Rh|Rhodium|Rodi|45|9|transition
+Pd|Palladium|Paladi|46|10|transition
+Ag|Silver|Bạc|47|11|transition
+Cd|Cadmium|Cadimi|48|12|transition
+In|Indium|Indi|49|13|post
+Sn|Tin|Thiếc|50|14|post
+Sb|Antimony|Antimon|51|15|metalloid
+Te|Tellurium|Telua|52|16|metalloid
+I|Iodine|Iốt|53|17|halogen
+Xe|Xenon|Xenon|54|18|noble
+Cs|Caesium|Xesi|55|1|alkali
+Ba|Barium|Bari|56|2|alkaline
+La|Lanthanum|Lantan|57|3|lanth
+Hf|Hafnium|Hafni|72|4|transition
+Ta|Tantalum|Tantan|73|5|transition
+W|Tungsten|Vonfram|74|6|transition
+Re|Rhenium|Rheni|75|7|transition
+Os|Osmium|Osmi|76|8|transition
+Ir|Iridium|Iridi|77|9|transition
+Pt|Platinum|Bạch kim|78|10|transition
+Au|Gold|Vàng|79|11|transition
+Hg|Mercury|Thủy ngân|80|12|transition
+Tl|Thallium|Tali|81|13|post
+Pb|Lead|Chì|82|14|post
+Bi|Bismuth|Bitmut|83|15|post
+Po|Polonium|Poloni|84|16|post
+At|Astatine|Astatin|85|17|halogen
+Rn|Radon|Radon|86|18|noble
+Fr|Francium|Franxi|87|1|alkali
+Ra|Radium|Radi|88|2|alkaline
+Ac|Actinium|Actini|89|3|act
+Rf|Rutherfordium|Rutherfordi|104|4|transition
+Db|Dubnium|Dubni|105|5|transition
+Sg|Seaborgium|Seaborgi|106|6|transition
+Bh|Bohrium|Bohri|107|7|transition
+Hs|Hassium|Hassi|108|8|transition
+Mt|Meitnerium|Meitneri|109|9|transition
+Ds|Darmstadtium|Darmstadti|110|10|transition
+Rg|Roentgenium|Roentgeni|111|11|transition
+Cn|Copernicium|Copernixi|112|12|transition
+Nh|Nihonium|Nihoni|113|13|post
+Fl|Flerovium|Flerovi|114|14|post
+Mc|Moscovium|Moscovi|115|15|post
+Lv|Livermorium|Livermori|116|16|post
+Ts|Tennessine|Tennessine|117|17|halogen
+Og|Oganesson|Oganesson|118|18|noble
+Ce|Cerium|Xeri|58|0|lanth
+Pr|Praseodymium|Prazeodymi|59|0|lanth
+Nd|Neodymium|Neodymi|60|0|lanth
+Pm|Promethium|Prometi|61|0|lanth
+Sm|Samarium|Samari|62|0|lanth
+Eu|Europium|Europi|63|0|lanth
+Gd|Gadolinium|Gadolini|64|0|lanth
+Tb|Terbium|Terbi|65|0|lanth
+Dy|Dysprosium|Dysprosi|66|0|lanth
+Ho|Holmium|Holmi|67|0|lanth
+Er|Erbium|Erbi|68|0|lanth
+Tm|Thulium|Thuli|69|0|lanth
+Yb|Ytterbium|Ytterbi|70|0|lanth
+Lu|Lutetium|Luteti|71|0|lanth
+Th|Thorium|Thori|90|0|act
+Pa|Protactinium|Protactini|91|0|act
+U|Uranium|Urani|92|0|act
+Np|Neptunium|Neptuni|93|0|act
+Pu|Plutonium|Plutoni|94|0|act
+Am|Americium|Americi|95|0|act
+Cm|Curium|Curi|96|0|act
+Bk|Berkelium|Berkeli|97|0|act
+Cf|Californium|Californi|98|0|act
+Es|Einsteinium|Einsteini|99|0|act
+Fm|Fermium|Fermi|100|0|act
+Md|Mendelevium|Mendelevi|101|0|act
+No|Nobelium|Nobeli|102|0|act
+Lr|Lawrencium|Lawrenci|103|0|act`;
+const elements=raw.trim().split('\n').map(x=>{let [s,en,vi,n,g,c]=x.split('|');return {s,en,vi,n:+n,g:+g,c}});
+const positions={};
+function period(n){if(n<=2)return 1;if(n<=10)return 2;if(n<=18)return 3;if(n<=36)return 4;if(n<=54)return 5;if(n<=86)return 6;return 7}
+function col(e){if(e.g)return e.g;if(e.n>=58&&e.n<=71)return e.n-54;if(e.n>=90&&e.n<=103)return e.n-86;return 3}
+function cls(c){return ({alkali:'alkali',alkaline:'alkaline',transition:'transition',post:'post',metalloid:'metalloid',nonmetal:'nonmetal',halogen:'halogen',noble:'noble',lanth:'lanth',act:'act'})[c]||'post'}
+function renderTable(){
+ const grid=document.getElementById('periodic');grid.innerHTML='';
+ const q=document.getElementById('search').value.toLocaleLowerCase('vi'),f=document.getElementById('filter').value;
+ const shown=elements.filter(e=>(!q||[e.s,e.en,e.vi,String(e.n)].some(v=>v.toLocaleLowerCase('vi').includes(q)))&&(f==='all'||(f==='metal'&&['alkali','alkaline','transition','post','lanth','act'].includes(e.c))||(f==='nonmetal'&&['nonmetal','halogen'].includes(e.c))||e.c===f));
+ for(const e of shown.filter(e=>e.n<57||(e.n>=72&&e.n<89)||e.n>103)){
+  let p=period(e.n),g=col(e);if(e.n>=57&&e.n<=71)g=e.n===57?3:e.n-54;if(e.n>=89&&e.n<=103)g=e.n===89?3:e.n-86;
+  const el=document.createElement('button');el.className='element '+cls(e.c);el.style.gridColumn=g;el.style.gridRow=p;el.innerHTML=`<em>${e.n}</em><b>${e.s}</b><small>${e.vi}</small>`;el.onclick=()=>openElement(e);grid.append(el);
+ }
+ document.getElementById('lanths').innerHTML='';document.getElementById('acts').innerHTML='';
+ elements.filter(e=>e.c==='lanth'||e.c==='act').forEach(e=>{if(q&&! [e.s,e.en,e.vi,String(e.n)].some(v=>v.toLocaleLowerCase('vi').includes(q)))return;if(f!=='all'&&f!=='metal')return;let b=document.createElement('button');b.className='element '+cls(e.c);b.style.flex='1';b.innerHTML=`<em>${e.n}</em><b>${e.s}</b><small>${e.vi}</small>`;b.onclick=()=>openElement(e);document.getElementById(e.c==='lanth'?'lanths':'acts').append(b)});
+}
+function openElement(e){document.getElementById('mSymbol').textContent=e.s;document.getElementById('mName').textContent=e.vi;document.getElementById('mEn').textContent=e.en;document.getElementById('mInfo').textContent=`Số hiệu nguyên tử: ${e.n}. Nhóm: ${e.g||'Họ f'}. Chu kỳ: ${period(e.n)}. Đây là một nguyên tố thuộc bảng tuần hoàn.`;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('search').addEventListener('input',renderTable);document.getElementById('filter').addEventListener('change',renderTable);
+function showTab(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='table')renderTable();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+let score=0,round=0,mode='symbol',current=null;
+function updateScore(){document.getElementById('homeScore').textContent=score}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startQuiz(m){mode=m;round=0;document.getElementById('gameMenu').style.display='none';document.getElementById('gameArea').style.display='block';nextQuestion()}
+function nextQuestion(){
+ if(round>=10){document.getElementById('gameArea').innerHTML=`<h2>🎉 Hoàn thành thử thách!</h2><p>Bạn đã hoàn thành 10 câu. Tổng điểm hiện tại: <b>${score}</b>.</p><div class="actions"><button class="primary" onclick="startQuiz('${mode}')">Chơi lại</button><button class="secondary" onclick="backGames()">Chọn trò chơi khác</button></div>`;return}
+ round++;current=elements[Math.floor(Math.random()*elements.length)];let choices=shuffle([current,...shuffle(elements.filter(e=>e!==current)).slice(0,3)]);
+ let prompt=mode==='symbol'?`Ký hiệu <span style="color:#2459c6">${current.s}</span> là nguyên tố nào?`:`Nguyên tố <span style="color:#2459c6">${current.vi}</span> có ký hiệu nào?`;
+ document.getElementById('gameArea').innerHTML=`<div class="gamehead"><span>Câu ${round}/10</span><span>Điểm: ${score}</span></div><div class="question">${prompt}</div><div class="answers">${choices.map((e,i)=>`<button class="answer" onclick="answerQuiz(this,'${e.s}')">${mode==='symbol'?e.vi:e.s}</button>`).join('')}</div><div class="feedback" id="feedback">Chọn một đáp án nhé!</div><div class="actions"><button class="secondary" onclick="backGames()">← Chọn trò chơi khác</button></div>`;
+}
+function answerQuiz(btn,s){let all=document.querySelectorAll('.answer');all.forEach(b=>b.disabled=true);let ok=s===current.s;if(ok){score+=10;updateScore();btn.classList.add('correct');document.getElementById('feedback').textContent='Chính xác! +10 điểm 🌟'}else{btn.classList.add('wrong');all.forEach(b=>{if((mode==='symbol'?b.textContent===current.vi:b.textContent===current.s))b.classList.add('correct')});document.getElementById('feedback').textContent=`Chưa đúng. Đáp án là ${current.vi} (${current.s}).`}let next=document.createElement('button');next.className='primary';next.textContent=round===10?'Xem kết quả':'Câu tiếp theo';next.onclick=nextQuestion;document.querySelector('#gameArea .actions').prepend(next)}
+function backGames(){document.getElementById('gameMenu').style.display='grid';document.getElementById('gameArea').style.display='none'}
+let matchCards=[],opened=[],matched=0,lock=false;
+function startMatch(){document.getElementById('gameMenu').style.display='none';let chosen=shuffle(elements).slice(0,6);matchCards=shuffle(chosen.flatMap(e=>[{key:e.s,label:e.s,pair:e.s},{key:e.s,label:e.vi,pair:e.s}]));opened=[];matched=0;renderMatch()}
+function renderMatch(){document.getElementById('gameArea').style.display='block';document.getElementById('gameArea').innerHTML=`<div class="gamehead"><span>Ghép tên với ký hiệu</span><span>Đã ghép: ${matched/2}/6</span></div><p class="muted">Chọn hai thẻ có cùng nguyên tố.</p><div class="matchgrid">${matchCards.map((c,i)=>`<button class="tile ${c.done?'done':''} ${c.open?'open':''}" onclick="flip(${i})">${c.open||c.done?c.label:'?'}</button>`).join('')}</div><div class="feedback" id="matchFeedback">Tìm đủ 6 cặp nhé!</div><div class="actions"><button class="secondary" onclick="backGames()">← Chọn trò chơi khác</button><button class="primary" onclick="startMatch()">Chơi ván mới</button></div>`}
+function flip(i){if(lock||matchCards[i].done||matchCards[i].open)return;matchCards[i].open=true;opened.push(i);renderMatch();if(opened.length===2){lock=true;let [a,b]=opened;if(matchCards[a].pair===matchCards[b].pair&&a!==b&&matchCards[a].label!==matchCards[b].label){matchCards[a].done=matchCards[b].done=true;matched+=2;score+=10;updateScore();opened=[];lock=false;renderMatch();if(matched===12)document.getElementById('matchFeedback').textContent='Tuyệt vời! Bạn đã ghép đủ 6 cặp và nhận 60 điểm.'}else{setTimeout(()=>{matchCards[a].open=matchCards[b].open=false;opened=[];lock=false;renderMatch()},750)}}}
+renderTable();updateScore();
+</script>
+</body></html>
